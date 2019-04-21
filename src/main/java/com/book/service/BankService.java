@@ -2,6 +2,7 @@ package com.book.service;
 
 import com.book.dao.BankDao;
 import com.book.domain.Bank;
+import com.book.domain.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +21,17 @@ public class BankService {
         return bankDao.getAllBanks();
     }
 
-    public int deleteBank(long bookId){
-        return bankDao.deleteBank(bookId);
+    public int deleteBank(long bankId){
+        return bankDao.deleteBank(bankId);
     }
 
     public boolean addBank(Bank bank){
         return bankDao.addBank(bank)>0;
+    }
+
+    public Bank getBank(Long bankId){
+        Bank bank=bankDao.getBank(bankId);
+        return bank;
     }
 
     public boolean editBank(Bank bank){

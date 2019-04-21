@@ -30,4 +30,30 @@ public class BankController {
         modelAndView.addObject("banks",banks);
         return modelAndView;
     }
+
+    @RequestMapping("/updatebank.html")
+    public ModelAndView bookEdit(HttpServletRequest request){
+        long bankId=Integer.parseInt(request.getParameter("bankId"));
+        Bank bank=bankService.getBank(bankId);
+        ModelAndView modelAndView=new ModelAndView("admin_bank_edit");
+        modelAndView.addObject("detail",bank);
+        return modelAndView;
+    }
+
+    @RequestMapping("/bank_edit_do.html")
+    public String bankEditDo(HttpServletRequest request,String name,RedirectAttributes redirectAttributes){
+        long bankId=Integer.parseInt( request.getParameter("id"));
+        Bank bank=new Bank();
+        bank.setBankId(bankId);
+        bank.setName(name);
+        boolean succ=bankService.editBank(bank);
+        if (succ){
+            redirectAttributes.addFlashAttribute("succ", "银行信息修改成功！");
+            return "redirect:/allbanks.html";
+        }
+        else {
+            redirectAttributes.addFlashAttribute("error", "银行信息修改失败！");
+            return "redirect:/allbanks.html";
+        }
+    }
 }

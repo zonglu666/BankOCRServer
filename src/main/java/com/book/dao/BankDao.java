@@ -1,6 +1,7 @@
 package com.book.dao;
 
 import com.book.domain.Bank;
+import com.book.domain.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -23,6 +24,7 @@ public class BankDao {
     private final static String DELETE_BANK_SQL="delete from bank where bank_id = ?  ";
     private final static String EDIT_BANK_SQL="update bank set name= ? where bank_id= ? ";
     private final static String QUERY_ALL_BANKS_SQL="SELECT * FROM bank ";
+    private final static String GET_BANK_SQL="SELECT * FROM bank where bank_id = ? ";
 
     public ArrayList<Bank> getAllBanks(){
         final ArrayList<Bank> banks=new ArrayList<Bank>();
@@ -59,5 +61,16 @@ public class BankDao {
         return jdbcTemplate.update(EDIT_BANK_SQL,new Object[]{name,bankId});
     }
 
+
+    public Bank getBank(Long bankId){
+        final Bank bank =new Bank();
+        jdbcTemplate.query(GET_BANK_SQL, new Object[]{bankId}, new RowCallbackHandler() {
+            public void processRow(ResultSet resultSet) throws SQLException {
+                bank.setBankId(resultSet.getLong("bank_id"));
+                bank.setName(resultSet.getString("name"));
+            }
+        });
+        return bank;
+    }
 
 }
