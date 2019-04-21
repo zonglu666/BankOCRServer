@@ -64,7 +64,7 @@
         <table class="table table-hover" >
             <thead>
             <tr>
-                <th>银行卡</th>
+                <th>银行</th>
                 <th>卡号</th>
             </tr>
             </thead>
