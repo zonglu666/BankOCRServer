@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>全部读者</title>
+    <title>全部用户</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/bootstrap.min.js" ></script>
@@ -20,39 +20,28 @@
 <nav  style="position:fixed;z-index: 999;width: 100%;background-color: #fff" class="navbar navbar-default" role="navigation" >
     <div class="container-fluid">
         <div class="navbar-header" style="margin-left: 8%;margin-right: 1%">
-            <a class="navbar-brand" href="admin_main.html">图书管理系统</a>
+            <a class="navbar-brand" href="admin_main.html">卡包管理系统</a>
         </div>
         <div class="collapse navbar-collapse" >
             <ul class="nav navbar-nav navbar-left">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        图书管理
+                        银行管理
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="allbooks.html">全部图书</a></li>
+                        <li><a href="allbanks.html">全部银行</a></li>
                         <li class="divider"></li>
-                        <li><a href="book_add.html">增加图书</a></li>
+                        <li><a href="bank_add.html">增加银行</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        读者管理
+                        用户管理
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="allreaders.html">全部读者</a></li>
-                        <li class="divider"></li>
-                        <li><a href="reader_add.html">增加读者</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        借还管理
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="lendlist.html">借还日志</a></li>
+                        <li><a href="allusers.html">全部用户</a></li>
                     </ul>
                 </li>
                 <li >
@@ -114,7 +103,7 @@
                     <td><c:out value="${user.email}"></c:out></td>
                     <td>
                         <a href="user_card_list.html?userId=<c:out value="${user.userId}"></c:out>">
-                            <button type="button" class="btn btn-info btn-xs">查看银行卡</button>
+                            <button type="button" class="btn btn-info btn-xs">查看用户银行卡</button>
                         </a>
                     </td>
                 </tr>

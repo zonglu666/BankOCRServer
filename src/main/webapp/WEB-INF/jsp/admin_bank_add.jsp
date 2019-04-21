@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>编辑 ${detail.name}</title>
+    <title>添加银行</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/bootstrap.min.js" ></script>
@@ -59,28 +59,33 @@
         </div>
     </div>
 </nav>
-<div style="position: relative;top: 10%;width: 80%;margin-left: 10%">
-    <form action="bank_add_do.html" method="post" id="addbank" >
-        <div class="form-group">
-            <label for="name">银行名称</label>
-            <input type="text" class="form-control" name="name" id="name" placeholder="请输入银行名称">
+
+<div class="col-xs-6 col-md-offset-3" style="position: relative;top: 10%">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">添加银行</h3>
         </div>
-
-
-        <input type="submit" value="添加" class="btn btn-success btn-sm" class="text-left">
-        <script>
-            function mySubmit(flag){
-                return flag;
-            }
-            $("#addbank").submit(function () {
-                if($("#name").val()==''){
-                    alert("请填入完整银行信息！");
-                    return mySubmit(false);
-                }
-            })
-        </script>
-    </form>
-
+        <div class="panel-body">
+            <form action="bank_add_do.html" method="post" id="addbank" >
+                <div class="input-group">
+                    <span  class="input-group-addon">银行名称</span>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="请输入银行名称">
+                </div>
+                <input type="submit" value="添加" class="btn btn-success btn-sm" class="text-left">
+                <script>
+                    function mySubmit(flag){
+                        return flag;
+                    }
+                    $("#addbank").submit(function () {
+                        if($("#name").val()==''){
+                            alert("请填入完整银行名！");
+                            return mySubmit(false);
+                        }
+                    })
+                </script>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>
