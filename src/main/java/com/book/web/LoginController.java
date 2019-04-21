@@ -48,7 +48,8 @@ public class LoginController {
     public @ResponseBody Object loginCheck(HttpServletRequest request){
         int id=Integer.parseInt(request.getParameter("id"));
         String passwd = request.getParameter("passwd");
-                boolean isReader = loginService.hasMatchReader(id, passwd);
+                // boolean isReader = loginService.hasMatchReader(id, passwd);
+                boolean isReader = false;
                 boolean isAdmin = loginService.hasMatchAdmin(id, passwd);
         HashMap<String, String> res = new HashMap<String, String>();
                 if (isAdmin==false&&isReader==false) {
