@@ -1,7 +1,6 @@
 package com.book.dao;
 
 import com.book.domain.Bank;
-import com.book.domain.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -62,7 +61,7 @@ public class BankDao {
     }
 
 
-    public Bank getBank(Long bankId){
+    public Bank getBank(long bankId){
         final Bank bank =new Bank();
         jdbcTemplate.query(GET_BANK_SQL, new Object[]{bankId}, new RowCallbackHandler() {
             public void processRow(ResultSet resultSet) throws SQLException {

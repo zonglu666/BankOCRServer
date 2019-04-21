@@ -2,7 +2,6 @@ package com.book.service;
 
 import com.book.dao.BankDao;
 import com.book.domain.Bank;
-import com.book.domain.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,7 @@ public class BankService {
         return bankDao.addBank(bank)>0;
     }
 
-    public Bank getBank(Long bankId){
+    public Bank getBank(long bankId){
         Bank bank=bankDao.getBank(bankId);
         return bank;
     }

@@ -20,8 +20,4 @@ public class UserService {
         return userDao.getAllUsers();
     }
 
-    public int deleteUser(long userId){
-        return userDao.deleteUser(userId);
-    }
-
 }
