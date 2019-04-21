@@ -25,7 +25,7 @@ public class BankController {
 
     @RequestMapping("/allbanks.html")
     public ModelAndView allBank(){
-        ArrayList<Bank> banks=bankService.getallBanks();
+        ArrayList<Bank> banks=bankService.getAllBanks();
         ModelAndView modelAndView=new ModelAndView("admin_banks");
         modelAndView.addObject("banks",banks);
         return modelAndView;
@@ -38,6 +38,20 @@ public class BankController {
         ModelAndView modelAndView=new ModelAndView("admin_bank_edit");
         modelAndView.addObject("detail",bank);
         return modelAndView;
+    }
+
+    @RequestMapping("/deletebank.html")
+    public String deleteBank(HttpServletRequest request,RedirectAttributes redirectAttributes){
+        long bankId=Integer.parseInt(request.getParameter("bankId"));
+        int res=bankService.deleteBank(bankId);
+
+        if (res==1){
+            redirectAttributes.addFlashAttribute("succ", "银行信息删除成功！");
+            return "redirect:/allbanks.html";
+        }else {
+            redirectAttributes.addFlashAttribute("error", "银行信息失败！");
+            return "redirect:/allbanks.html";
+        }
     }
 
     @RequestMapping("/bank_edit_do.html")
@@ -53,6 +67,31 @@ public class BankController {
         }
         else {
             redirectAttributes.addFlashAttribute("error", "银行信息修改失败！");
+            return "redirect:/allbanks.html";
+        }
+    }
+
+    @RequestMapping("/bank_add.html")
+    public ModelAndView addBank(HttpServletRequest request){
+
+        return new ModelAndView("admin_bank_add");
+
+    }
+
+    @RequestMapping("/bank_add_do.html")
+    public String addBankDo(String name,RedirectAttributes redirectAttributes){
+        Bank bank=new Bank();
+        bank.setBankId(0);
+        bank.setName(name);
+
+        boolean succ=bankService.addBank(bank);
+        ArrayList<Bank> banks=bankService.getAllBanks();
+        if (succ){
+            redirectAttributes.addFlashAttribute("succ", "银行添加成功！");
+            return "redirect:/allbanks.html";
+        }
+        else {
+            redirectAttributes.addFlashAttribute("succ", "银行添加失败！");
             return "redirect:/allbanks.html";
         }
     }

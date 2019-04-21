@@ -17,7 +17,7 @@ public class BankService {
         this.bankDao = bankDao;
     }
 
-    public ArrayList<Bank> getallBanks(){
+    public ArrayList<Bank> getAllBanks(){
         return bankDao.getAllBanks();
     }
 
