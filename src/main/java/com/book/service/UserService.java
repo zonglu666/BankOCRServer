@@ -20,4 +20,11 @@ public class UserService {
         return userDao.getAllUsers();
     }
 
+    public User getUser(long userId){
+        return userDao.getUser(userId);
+    }
+
+    public User getUserByName(String name){
+        return userDao.getUserByName(name);
+    }
 }
