@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>识别银行卡</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style>
+			.imageup{
+				margin-top: 4.5rem;
+				width: 90%;
+				height: 90%;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav" style="padding-right: 15px;">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+				<h1 class="mui-center mui-title">识别银行卡</h1>
+			</div>
+		</header>
+		<div style="text-align: center;">
+			<img id="upload" src="https://dobe-1253358667.cos.ap-chengdu.myqcloud.com/card/2019426145021766.jpg" width="80%"
+			 class="imageup">
+		</div>
+		<div style="text-align: center;margin-top: 2em;">
+			<label id="bank_name" style="font-size: 2em;"></label>
+			<br>
+			<label id="card_no" style="width: 80%;margin-top: 2em;"></label>
+		</div>
+		<div style="text-align: center; margin-bottom: 1em;">
+			<button id="upload_img" type="button" class="mui-btn mui-btn-primary" style="width: 80%;margin-top: 2em;">上传图片</button>
+			<button id="ocr_img" type="button" class="mui-btn mui-btn-primary" style="width: 80%;margin-top: 2em;" disabled="disabled">识别银行卡</button>
+			<button id="save_card" type="button" class="mui-btn mui-btn-primary" style="width: 80%;margin-top: 2em;" disabled="disabled">保存到卡包</button>
+		</div>
+
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/cos-js-sdk-v5.js"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.plusReady(function() {
+				
+				function dataURLtoBlob(dataurl) {
+					var arr = dataurl.split(","),
+						mime = arr[0].match(/:(.*?);/)[1],
+						bstr = atob(arr[1]),
+						n = bstr.length,
+						u8arr = new Uint8Array(n);
+					while (n--) {
+						u8arr[n] = bstr.charCodeAt(n);
+					}
+					return new Blob([u8arr], {
+						type: mime
+					});
+				}
+
+				function GetTimeString() {
+					var date = new Date();
+					var yy = date.getFullYear().toString();
+					var mm = (date.getMonth() + 1).toString();
+					var dd = date.getDate().toString();
+					var hh = date.getHours().toString();
+					var nn = date.getMinutes().toString();
+					var ss = date.getSeconds().toString();
+					var mi = date.getMilliseconds().toString();
+
+					var ret = yy + mm + dd + hh + nn + ss + mi;
+					return ret;
+				}
+				var ocrBtn = doc.getElementById("ocr_img");
+				var uploadImage = doc.getElementById("upload");
+				var imgFile = doc.getElementById("img_file");
+				var uploadBtn = doc.getElementById("upload_img");
+				var imagePath = localStorage.getItem("$cardImagePath");
+				var imageCanvas = doc.getElementById("image_canvas");
+				var cardNoLabel = doc.getElementById("card_no");
+				var bankNameLabel = doc.getElementById("bank_name");
+				var saveCardBtn = doc.getElementById("save_card");
+
+				uploadImage.src = imagePath;
+
+				var bankNameStr = "";
+				var cardNoStr = "";
+				var cardImg= "";
+
+				saveCardBtn.addEventListener("tap", function(event) {
+					console.log(bankNameStr + cardNoStr);
+					var user_id = localStorage.getItem("$user_id");
+					mui.ajax("http://192.168.31.243:9000/api/saveCard", {
+						data: {
+							userId: "3",
+							cardNo: cardNoStr,
+							bankName: bankNameStr,
+							cardImg: cardImg
+						},
+						contentType: "application/json",
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						async: true,
+						success: function(data) {
+							if (data.stateCode == "1") {
+								plus.nativeUI.toast("保存成功");
+							} else {
+								plus.nativeUI.toast("保存失败");
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							plus.nativeUI.toast(xhr.statusText);
+						}
+					});
+				});
+
+				//实例化COS对象
+				var cos = new COS({
+					SecretId: "AKID1qSt67JcLzTlrlz1PLAnCUaWL3EHjmFU", //密钥id
+					SecretKey: "GJ9asyqWzKUR8f4HCuRmunX6aopgMszx" //密钥的key
+				});
+
+				ocrBtn.addEventListener("tap", function(event) {
+					mui.ajax("http://192.168.31.243:9000/api/getAppSign", {
+						contentType: "application/json",
+						dataType: "json", //服务器返回json格式数据
+						type: "post", //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						async: true,
+						success: function(data) {
+							console.log("签名"+data.sign);
+							mui.ajax("https://recognition.image.myqcloud.com/ocr/bankcard", {
+								headers: {
+									"Host": "recognition.image.myqcloud.com",
+									"Content-Type": "application/json",
+									"Authorization": data.sign
+								},
+								data: {
+									appid: "1253358667",
+									url: cardImg
+								},
+								contentType: "application/json",
+								dataType: "json", //服务器返回json格式数据
+								type: "post", //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								async: true,
+								success: function(data) {
+									if (data.code == 0) {
+										// 识别成功
+										var items = data.data.items;
+										for (var i = 0; i < items.length; i++) {
+											var item = items[i];
+											if (items[i].item == "卡号") {
+												cardNoStr = items[i].itemstring;
+												cardNoLabel.innerHTML = "NO: " + cardNoStr;
+											}
+											if (items[i].item == "银行信息") {
+												var index = items[i].itemstring.indexOf("银行");
+												bankNameStr = items[i].itemstring.substr(0, index + 2);
+												bankNameLabel.innerHTML = bankNameStr;
+											}
+										}
+										saveCardBtn.removeAttribute("disabled");
+									} else {
+										cardNoLabel.innerHTML = "无法识别卡号";
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									plus.nativeUI.toast("网络连接失败，请重新尝试");
+								}
+							});
+						},
+						error: function(xhr, type, errorThrown) {
+							plus.nativeUI.toast("网络连接失败，请重新尝试");
+						}
+					});
+				});
+
+				uploadBtn.addEventListener("tap", function(event) {
+					plus.nativeUI.toast("图片上传中...");
+					var imagePath = localStorage.getItem("$cardImagePath");
+					console.log("imagePath"+imagePath);
+					plus.io.resolveLocalFileSystemURL(imagePath, function(entry) {
+						entry.file(function(file) {
+							reader = new plus.io.FileReader();
+							reader.onloadend = function(e) {
+								plus.nativeUI.closeWaiting();
+								plus.console.log(e.target.result);
+								//读取文件内容 dataurl 转化为BLOB对象  
+								var blob = dataURLtoBlob(e.target.result);
+								var imageName = "card/" + GetTimeString() + ".jpg";
+								//BLOB对象转换为FILE对象   
+								newfile = new File([blob], file.name);
+								cos.putObject({
+									Bucket: "dobe-1253358667", // 桶名-APPID  必须
+									Region: "ap-chengdu", //区域 必须
+									Key: imageName, //文件名必须
+									StorageClass: "STANDARD",
+									Body: newfile, // 上传文件对象
+									onProgress: function(progressData) {
+										console.log(JSON.stringify(progressData)); //上传成功的返回值
+										plus.nativeUI.closeWaiting();
+										plus.nativeUI.showWaiting("已上传"+ parseInt(progressData.percent*100)+"%");
+									}
+								}, function(err, data) {
+									plus.nativeUI.closeWaiting();
+									if (err) {
+										plus.nativeUI.toast("网络连接失败, 请稍后再试");
+									} else {
+										plus.nativeUI.toast("图片上传成功，请识别");
+										cardImg = "https://" + data.Location;
+										localStorage.setItem("$imageUrl", cardImg);
+										ocrBtn.removeAttribute("disabled");
+									}
+								});
+
+							};
+							reader.readAsDataURL(file);
+
+						});
+					})
+
+				});
+
+
+			});
+		}(mui, document));
+	</script>
+</html>
