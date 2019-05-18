@@ -73,7 +73,7 @@ public class CardController {
         String secretId = "AKID1qSt67JcLzTlrlz1PLAnCUaWL3EHjmFU";
         String secretKey = "GJ9asyqWzKUR8f4HCuRmunX6aopgMszx";
         String bucketName = "dobe-1253358667";
-        long expired = 0;
+        long expired = 10000;
         HashMap<String, String> res = new HashMap<String, String>();
         try {
             String signStr = sign.appSign(appId,secretId,secretKey,bucketName,expired);
