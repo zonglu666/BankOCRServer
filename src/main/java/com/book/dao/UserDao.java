@@ -73,7 +73,7 @@ public class UserDao {
 
     public int userReg(String name, String password, String email, String phone) {
         int isExistUser = jdbcTemplate.queryForObject(GET_USER_COUNT_SQL_BY_NAME, new Object[]{name}, Integer.class);
-        if (isExistUser >= 0) {
+        if (isExistUser > 0) {
             return 0;
         }
         return jdbcTemplate.update(ADD_USER_SQL, new Object[]{name, password, email, phone});

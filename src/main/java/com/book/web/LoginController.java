@@ -96,6 +96,7 @@ public class LoginController {
         String password = requestJson.getString("password").toString();
         String phone = requestJson.getString("phone").toString();
         String email = requestJson.getString("email").toString();
+
         HashMap<String, String> res = new HashMap<String, String>();
         int result = loginService.userReg(name, password, phone, email);
         res.put("stateCode", String.valueOf(result));
