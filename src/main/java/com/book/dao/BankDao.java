@@ -21,7 +21,7 @@ public class BankDao {
 
     private final static String ADD_BANK_SQL="INSERT INTO bank VALUES(NULL ,?)";
     private final static String DELETE_BANK_SQL="delete from bank where bank_id = ?  ";
-    private final static String EDIT_BANK_SQL="update bank set name= ? where bank_id= ? ";
+    private final static String EDIT_BANK_SQL="update bank set name = ? where bank_id= ? ";
     private final static String QUERY_ALL_BANKS_SQL="SELECT * FROM bank ";
     private final static String GET_BANK_SQL="SELECT * FROM bank where bank_id = ? ";
     private final static String MATCH_COUNT_BANK_BY_NAME_SQL="SELECT count(*) FROM bank where name = ? ";

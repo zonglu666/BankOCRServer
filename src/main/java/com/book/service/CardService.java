@@ -48,11 +48,20 @@ public class CardService {
         return cardDao.addCard(card);
     }
 
+    public int modifyCardNo(long cardId, String cardNo){
+        return cardDao.modifyCardNo(cardId, cardNo);
+    }
+
     public ArrayList<Card> getAllUserCards(long userId){
         return cardDao.getAllUserCards(userId);
     }
     public ArrayList<Card> getUserCards(long userId){
         return cardDao.getUserCards(userId);
     }
+
+    public Card getCardInfo(long cardId){
+        return cardDao.getCardInfo(cardId);
+    }
+
 
 }

@@ -19,7 +19,7 @@ public class UserDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private final static String ADD_USER_SQL = "INSERT INTO user (name , phone, email, password) VALUES(?,?,?,?)";
+    private final static String ADD_USER_SQL = "INSERT INTO user (name, password, email, phone) VALUES(?,?,?,?)";
     private final static String DELETE_USER_SQL = "delete from user where user_id = ?  ";
     private final static String QUERY_ALL_USERS_SQL = "SELECT * FROM user ";
     private final static String GET_USER_SQL = "SELECT * FROM user where user_id = ? ";
@@ -47,13 +47,7 @@ public class UserDao {
     }
 
     public int deleteUser(long userId) {
-
         return jdbcTemplate.update(DELETE_USER_SQL, userId);
-    }
-
-    public int addUser(User user) {
-        String name = user.getName();
-        return jdbcTemplate.update(ADD_USER_SQL, new Object[]{name});
     }
 
     public User getUser(Long userId) {

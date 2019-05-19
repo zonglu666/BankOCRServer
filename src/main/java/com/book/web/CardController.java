@@ -2,6 +2,7 @@ package com.book.web;
 
 import com.book.domain.Card;
 import com.book.domain.Card;
+import com.book.domain.User;
 import com.book.service.CardService;
 import com.book.service.Sign;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,8 @@ public class CardController {
         return cardService.getUserCards(userId);
     }
 
+
+
     @RequestMapping(value = "/api/saveCard", method = RequestMethod.POST)
     @ResponseBody
     public Object saveCard(@RequestBody JSONObject requestJson) {
@@ -65,10 +68,32 @@ public class CardController {
         return res;
     }
 
-    @RequestMapping(value="/api/getAppSign", method= RequestMethod.POST)
-    public
+    @RequestMapping(value = "/api/modifyCardNo", method = RequestMethod.POST)
     @ResponseBody
-    Object getAppSign(HttpServletRequest request) {
+    public Object modifyCardNo(@RequestBody JSONObject requestJson) {
+        int cardId = Integer.parseInt(requestJson.getString("cardId"));
+        String cardNo = requestJson.getString("cardNo").toString();
+        HashMap<String, String> res = new HashMap<String, String>();
+        int result = cardService.modifyCardNo(cardId, cardNo);
+        res.put("stateCode", String.valueOf(result));
+        return res;
+    }
+
+    @RequestMapping(value = "/api/getCardInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getCardInfo(@RequestBody JSONObject requestJson) {
+        int cardId = Integer.parseInt(requestJson.getString("cardId"));
+        HashMap<String, String> res = new HashMap<String, String>();
+        Card card = cardService.getCardInfo(cardId);
+        res.put("bank_name", card.getBankName());
+        res.put("card_no", card.getCardNo());
+        res.put("card_img", card.getCardImg());
+        return res;
+    }
+
+    @RequestMapping(value="/api/getAppSign", method= RequestMethod.POST)
+    @ResponseBody
+    public Object getAppSign(HttpServletRequest request) {
         long appId = 1253358667;
         String secretId = "AKID1qSt67JcLzTlrlz1PLAnCUaWL3EHjmFU";
         String secretKey = "GJ9asyqWzKUR8f4HCuRmunX6aopgMszx";

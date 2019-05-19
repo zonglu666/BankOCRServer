@@ -3,6 +3,7 @@ package com.book.domain;
 import java.io.Serializable;
 
 public class Card implements Serializable {
+    private long cardId;
     private String bankName;
     private String cardNo;
     private String cardImg;
@@ -27,6 +28,10 @@ public class Card implements Serializable {
         this.userId = userId;
     }
 
+    public void setCardId(long cardId) {
+        this.cardId = cardId;
+    }
+
     public String getBankName() { return bankName; }
 
     public String getCardNo() { return cardNo; }
@@ -36,4 +41,8 @@ public class Card implements Serializable {
     public long getBankId() { return bankId; }
 
     public int getUserId() { return userId; }
+
+    public long getCardId() {
+        return cardId;
+    }
 }
