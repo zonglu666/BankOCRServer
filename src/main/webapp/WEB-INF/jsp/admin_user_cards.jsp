@@ -15,13 +15,14 @@
             color: #5e5e5e;
         }
         .img-box{
-            width: 390px;
+            width: 280px;
+            height: 150px;
             overflow: hidden;
         }
         .img{
             display: block;
-            width: 100%;
-            height: 100%;
+            max-width: 280px;
+            max-height: 150px;
             transition: all 1s;
         }
         .img:hover{
