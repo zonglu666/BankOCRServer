@@ -38,13 +38,28 @@ public class CardController {
 
     @RequestMapping("/user_card_list.html")
     public ModelAndView allUserCard(HttpServletRequest request){
-
         long userId=Integer.parseInt( request.getParameter("userId"));
-        ArrayList<Card> cards=cardService.getAllUserCards(userId);
+        ArrayList<Card> cards=cardService.getUserAllCards(userId);
         ModelAndView modelAndView=new ModelAndView("admin_user_cards");
         modelAndView.addObject("cards",cards);
         return modelAndView;
     }
+
+    @RequestMapping("/deletecard.html")
+    public String deleteBank(HttpServletRequest request,RedirectAttributes redirectAttributes){
+        long cardId=Integer.parseInt(request.getParameter("cardId"));
+        long userId=Integer.parseInt(request.getParameter("userId"));
+        int res=cardService.deleteCard(cardId, userId);
+
+        if (res==1){
+            redirectAttributes.addFlashAttribute("succ", "银行卡删除成功！");
+            return "redirect:/user_card_list.html?userId="+userId;
+        }else {
+            redirectAttributes.addFlashAttribute("error", "银行卡失败！");
+            return "redirect:/user_card_list.html?userId="+userId;
+        }
+    }
+
 
     @RequestMapping(value ="/api/getUserCards", method = RequestMethod.POST)
     @ResponseBody
@@ -53,7 +68,16 @@ public class CardController {
         return cardService.getUserCards(userId);
     }
 
-
+    @RequestMapping(value ="/api/deleteUserCard", method = RequestMethod.POST)
+    @ResponseBody
+    public Object deleteUserCard(@RequestBody JSONObject requestJson){
+        int userId = Integer.parseInt(requestJson.getString("userId"));
+        int cardId = Integer.parseInt(requestJson.getString("cardId"));
+        HashMap<String, String> res = new HashMap<String, String>();
+        int result=cardService.deleteCard(cardId, userId);
+        res.put("stateCode", String.valueOf(result));
+        return res;
+    }
 
     @RequestMapping(value = "/api/saveCard", method = RequestMethod.POST)
     @ResponseBody

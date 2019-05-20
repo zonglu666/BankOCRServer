@@ -52,8 +52,8 @@ public class CardService {
         return cardDao.modifyCardNo(cardId, cardNo);
     }
 
-    public ArrayList<Card> getAllUserCards(long userId){
-        return cardDao.getAllUserCards(userId);
+    public ArrayList<Card> getUserAllCards(long userId){
+        return cardDao.getUserAllCards(userId);
     }
     public ArrayList<Card> getUserCards(long userId){
         return cardDao.getUserCards(userId);
@@ -63,5 +63,7 @@ public class CardService {
         return cardDao.getCardInfo(cardId);
     }
 
-
+    public int deleteCard(long cardId, long userId){
+        return cardDao.deleteCard(cardId, userId);
+    }
 }

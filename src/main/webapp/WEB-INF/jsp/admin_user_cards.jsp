@@ -3,15 +3,34 @@
 <html>
 <head>
     <title>全部银行卡</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/jquery-3.2.1.js"></script>
-    <script src="js/bootstrap.min.js" ></script>
     <style>
         body{
             background-color: rgb(240,242,245);
         }
+        .table{
+            margin-bottom: 0px;
+        }
+        .td-text {
+            font-size: larger;
+            color: #5e5e5e;
+        }
+        .img-box{
+            width: 390px;
+            overflow: hidden;
+        }
+        .img{
+            display: block;
+            width: 100%;
+            height: 100%;
+            transition: all 1s;
+        }
+        .img:hover{
+            transform: scale(1.4); //放大 倍数随意
+        }
     </style>
-
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/bootstrap.min.js" ></script>
 </head>
 <body>
     <nav  style="position:fixed;z-index: 999;width: 100%;background-color: #fff" class="navbar navbar-default" role="navigation" >
@@ -64,15 +83,23 @@
         <table class="table table-hover" >
             <thead>
             <tr>
-                <th>银行</th>
+                <th>银行卡</th>
+                <th>开户行</th>
                 <th>卡号</th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach items="${cards}" var="card">
                 <tr>
-                    <td><c:out value="${card.bankName}"></c:out></td>
-                    <td><c:out value="${card.cardNo}"></c:out></td>
+                    <td>
+                        <div class="img-box">
+                            <img class="img card-image" src="<c:out value="${card.cardImg}"></c:out>">
+                        </div>
+                    </td>
+                    <td class="td-text" style="vertical-align: middle;"><c:out value="${card.bankName}"></c:out></td>
+                    <td class="td-text" style="vertical-align: middle;"><c:out value="${card.cardNo}"></c:out></td>
+                    <td style="vertical-align: middle;"><a href="deletecard.html?cardId=<c:out value="${card.cardId}"></c:out>&userId=<c:out value="${card.userId}"></c:out>"><button type="button" class="btn btn-danger btn-xs">删除银行卡</button></a></td>
                 </tr>
             </c:forEach>
             </tbody>
